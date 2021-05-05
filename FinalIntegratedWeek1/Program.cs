@@ -12,6 +12,7 @@ namespace FinalIntegratedWeek1
             int option;
             do
             {
+                
                 DisplayMenuToUser();
                 option = Convert.ToInt32(Console.ReadLine());
                 switch (option)
@@ -39,9 +40,14 @@ namespace FinalIntegratedWeek1
         private static void GenerateBinaryFile()
         {
             BinaryFormatter bf = new BinaryFormatter();
-            Console.WriteLine("Enter the file name : ");
-            string fileName = Console.ReadLine();
-            FileStream fsout = new FileStream(@$"C:\Users\Nikhil\source\repos\FinalIntegratedWeek1\FinalIntegratedWeek1\{fileName}.binary", FileMode.Create, FileAccess.Write);
+            //Console.WriteLine("Enter the file name : ");
+            //string fileName = Console.ReadLine();
+            string workingDirectory = Environment.CurrentDirectory;
+            //Console.WriteLine(Environment.CurrentDirectory);
+            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.FullName;
+            
+            string fileName = "BinaryFile";
+            FileStream fsout = new FileStream(@$"{projectDirectory}\{fileName}.binary", FileMode.Create, FileAccess.Write);
             try
             {
                 using (fsout)
