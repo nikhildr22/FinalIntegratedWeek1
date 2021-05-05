@@ -16,7 +16,7 @@ namespace FinalIntegratedWeek1
         {
             Name = name;
             Price = price;
-        }
+        }                                           
 
         public string Name { get => _name; set => _name = value; }
         public double Price { get => _price; set => _price = value; }
