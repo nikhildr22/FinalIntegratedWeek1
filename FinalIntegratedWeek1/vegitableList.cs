@@ -34,5 +34,15 @@ namespace FinalIntegratedWeek1
         {
             return GetEnumerator();
         }
+
+        public double GetTotalBillAmount()
+        {
+            double total = 0;
+            foreach (Vegitable vegitable in Vegitables)
+            {
+                total += vegitable.Price;
+            }
+            return total;
+        }
     }
 }
