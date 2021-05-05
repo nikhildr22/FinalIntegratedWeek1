@@ -50,7 +50,27 @@ namespace FinalIntegratedWeek1
 
         private static void WriteIntoExcelFile()
         {
-            throw new NotImplementedException();
+            string projectDirectory = GetProjectDirectory();
+            string fileName = "ExcelFile.xlsx";
+            string pathToFile = projectDirectory + @"\" + fileName;
+            ExcelWriter.Initializer(pathToFile);
+            ExcelWriter.Write(1, 1, "Vegitable Name");
+            ExcelWriter.Write(1, 2, "Price");
+            int rowCounter = 2;
+            foreach (Vegitable vegitable in _vegitables)
+            {
+                int columnCounter = 1;
+                ExcelWriter.Write(rowCounter, columnCounter, vegitable.Name);
+                columnCounter++;
+                ExcelWriter.Write(rowCounter, columnCounter, vegitable.Price.ToString());
+                rowCounter++;
+            }
+            string outputFile = projectDirectory + @"\" + $"FinalExcelFile-{DateTime.Now.ToString("dddd, dd MMMM yyyy HH-mm-ss")}.xlsx";
+            ExcelWriter.SaveAs(outputFile);
+            Console.WriteLine($"File save as : {outputFile}");
+
+
+
         }
 
         private static void WriteIntoTextFile()
