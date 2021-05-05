@@ -1,0 +1,5 @@
+_________BILL____________
+Vegitable Name - 1 | Vegitable Price - 1
+Vegitable Name - 1 | Vegitable Price - 1
+_________________________
+Total Bill = 2
