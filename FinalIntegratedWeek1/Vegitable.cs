@@ -1,33 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 
 namespace FinalIntegratedWeek1
 {
-    class vegitableList : IEnumerator<Vegitable>
+    [Serializable]
+    class Product
     {
-        public Vegitable Current => throw new System.NotImplementedException();
-
-        object IEnumerator.Current => throw new System.NotImplementedException();
-
-        public void Dispose()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool MoveNext()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Reset()
-        {
-            throw new System.NotImplementedException();
-        }
+        protected string _name;
+        protected double _price;
     }
-    class Vegitable
+    [Serializable]
+    class Vegitable : Product
     {
-        private string _name;
-        private double _price;
 
         public Vegitable(string name, double price)
         {
@@ -37,5 +20,10 @@ namespace FinalIntegratedWeek1
 
         public string Name { get => _name; set => _name = value; }
         public double Price { get => _price; set => _price = value; }
+
+        public override string ToString()
+        {
+            return $"Vegitable Name - {Name} | Vegitable Price - {Price}"; 
+        }
     }
 }
