@@ -1,6 +1,6 @@
 _________BILL____________
-Vegitable Name - banana | Vegitable Price - 100
-Vegitable Name - tomato | Vegitable Price - 200
-Vegitable Name - ginger | Vegitable Price - 50
+Vegitable Name - 1 | Vegitable Price - 1
+Vegitable Name - 2 | Vegitable Price - 2
+Vegitable Name - 3 | Vegitable Price - 3
 _________________________
-Total Bill = 350
+Total Bill = 6

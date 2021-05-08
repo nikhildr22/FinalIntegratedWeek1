@@ -42,25 +42,8 @@ namespace FinalIntegratedWeek1
             ws.SaveAs(filename);
         }
 
-        //static void Main()
-        //{
-        //    Initializer(@"C:\Users\Nikhil\Desktop\DotnetTestFile.xlsx");
-        //    //Console.WriteLine(Read(1, 1)); // Excel indexing starts from 1 -->  NOTE THIS
-        //    Student student = new Student { Name = "Nikhil", Roll = 1, Marks = 100 };
-        //    Write(2, 2, student.Roll.ToString());
-        //    Write(2, 1, student.Name);
-        //    Write(2, 3, student.Marks.ToString());
-        //    for (int i = 1; i < 10; i++)
-        //    {
-        //        Console.WriteLine(Read(2, i).ToString());
-        //    }
-        //    // Above loop is just for single row
-        //    // for multiple rows, we have to use 2 loops to iterate over both rows and columns
-
-        //    //Saving it to a different file, due to ReadOnly file handling previleges since  the file is being handled by one task
-        //    SaveAs(@"C:\Users\Nikhil\Desktop\DotnetTestFile1.xlsx");
-
-        //}
+        
+       
 
     }
 }

@@ -73,21 +73,22 @@ namespace FinalIntegratedWeek1
 
         }
 
-        private static void WriteIntoTextFile()
+        private async static void WriteIntoTextFile()
         {
             string projectDirectory = GetProjectDirectory();
             string fileName = "textfile.txt";
             using (StreamWriter writer = new StreamWriter($@"{projectDirectory}\{fileName}"))
             {
-                writer.WriteLine("_________BILL____________");
+                await writer.WriteLineAsync("_________BILL____________");
                 foreach (Vegitable vegitable in _vegitables)
                 {
-                    writer.WriteLine(vegitable.ToString());
+                    await writer.WriteLineAsync(vegitable.ToString());
                 }
-                writer.WriteLine("_________________________");
-                writer.WriteLine($"Total Bill = {_vegitables.GetTotalBillAmount()}");
+               await writer.WriteLineAsync("_________________________");
+               await writer.WriteLineAsync($"Total Bill = {_vegitables.GetTotalBillAmount()}");
                 
             }
+            Console.WriteLine("ended");
         }
 
         private static void ReadFromBinaryFile()
