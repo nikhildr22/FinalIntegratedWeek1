@@ -1,6 +1,4 @@
 _________BILL____________
-Vegitable Name - 1 | Vegitable Price - 1
-Vegitable Name - 2 | Vegitable Price - 2
-Vegitable Name - 3 | Vegitable Price - 3
+Vegitable Name - rrr | Vegitable Price - 3
 _________________________
-Total Bill = 6
+Total Bill = 3

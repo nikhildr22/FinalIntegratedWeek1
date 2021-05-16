@@ -9,7 +9,7 @@ namespace FinalIntegratedWeek1
         protected double _price;
     }
     [Serializable]
-    class Vegitable : Product
+    class Vegitable : Product, IComparable<Vegitable>, IEquatable<Vegitable>
     {
 
         public Vegitable(string name, double price)
@@ -19,7 +19,49 @@ namespace FinalIntegratedWeek1
         }                                           
 
         public string Name { get => _name; set => _name = value; }
-        public double Price { get => _price; set => _price = value; }
+        public double Price 
+        { 
+            get => _price; 
+            set 
+            {
+                if (value>1000)
+                {
+                    throw new OverPricedVegitableException(value);
+                }
+                _price = value; 
+            } 
+        }
+
+        //IComparable implementation to make Sort() method work
+        public int CompareTo(Vegitable other)
+        {
+            
+            if (this.Price > other.Price)
+            {
+                return 1;
+            }
+            else if(this.Price < other.Price)
+            {
+                return -1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        public bool Equals(Vegitable other)
+        {
+            
+                return this.Name.CompareTo(other.Name) == 0 ? true : false;
+            
+            
+        }
+
+        public override bool Equals(object obj)
+        {
+            return this.Equals(obj);
+        }
 
         public override string ToString()
         {

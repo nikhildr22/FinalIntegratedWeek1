@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+
+using AnotherNameSpace;
 
 namespace FinalIntegratedWeek1
 {
@@ -18,7 +21,7 @@ namespace FinalIntegratedWeek1
                 switch (option)
                 {
                     case 1:
-                        AddVegitable();
+                            AddVegitable();
                         break;
                     case 2:
                         DisplayAllVegitables();
@@ -37,7 +40,19 @@ namespace FinalIntegratedWeek1
                     case 6:
                         WriteIntoExcelFile();
                         break;
+                    case 7:
+                        FileStreamDemo();
+                        break;
+                    case 8:
+                        SortByPriceAndDisplay(_vegitables);
+                        break;
+                    case 9:
+                        SortByNameAndDisplay(_vegitables);
+                        break;
                     case 10:
+                        FindVegitableByName();
+                        break;
+                    case 20:
                         Exit();
                         break;
                     default:
@@ -45,12 +60,65 @@ namespace FinalIntegratedWeek1
                         break;
                 }
 
-            } while (option!=10);
+            } while (option!=20);
+        }
+
+        private static void FindVegitableByName()
+        {
+            Console.WriteLine("Enter the vegitable name : ");
+            string name = Console.ReadLine();
+            bool isFound = false;
+            Vegitable newVegitable = new Vegitable(name, 0.0);
+            foreach (Vegitable vegitable in _vegitables)
+            {
+                if (vegitable.Equals( newVegitable) )
+                {
+                    DisplaySingleVegitableDetails(vegitable);
+                    isFound = true;
+                    break;
+                }
+                
+            }
+            if (!isFound)
+            {
+                Console.WriteLine("Entered Vegitable was not found!!! ");
+            }
+            
+        }
+
+        private static void SortByNameAndDisplay(vegitableList vegitables)
+        {
+            // This works with IComparer interface
+            IEnumerable<Vegitable> newList = vegitables.GetSortedVegitablesByName(vegitables);
+            foreach (Vegitable vegitable in newList)
+            {
+                DisplaySingleVegitableDetails(vegitable);
+            }
+        }
+
+        private static void SortByPriceAndDisplay(vegitableList vegitables)
+        {
+            // This works with IComparable interface
+            IEnumerable<Vegitable> newList = vegitables.GetSortedVegitablesByPrice(vegitables);
+            foreach (Vegitable vegitable in newList)
+            {
+                DisplaySingleVegitableDetails(vegitable);
+            }
+        }
+
+        private static void FileStreamDemo()
+        {
+            AnotherNameSpace.StreamsHandler.CreateNewFolder("NewFolder");
+            AnotherNameSpace.StreamsHandler.WriteUsingFileClass(_vegitables);
+            AnotherNameSpace.StreamsHandler.WriteUsingFileStream(_vegitables);
+
         }
 
         private static void WriteIntoExcelFile()
         {
             string projectDirectory = GetProjectDirectory();
+            string newFolderName = "NewExcelFiles";
+            AnotherNameSpace.StreamsHandler.CreateNewFolder(newFolderName);
             string fileName = "ExcelFile.xlsx";
             string pathToFile = projectDirectory + @"\" + fileName;
             ExcelWriter.Initializer(pathToFile);
@@ -65,9 +133,9 @@ namespace FinalIntegratedWeek1
                 ExcelWriter.Write(rowCounter, columnCounter, vegitable.Price.ToString());
                 rowCounter++;
             }
-            string outputFile = projectDirectory + @"\" + $"FinalExcelFile-{DateTime.Now.ToString("dddd, dd MMMM yyyy HH-mm-ss")}.xlsx";
+            string outputFile = projectDirectory + @"\" +newFolderName+ @"\" + $"FinalExcelFile-{DateTime.Now.ToString("dddd, dd MMMM yyyy HH-mm-ss")}.xlsx";
             ExcelWriter.SaveAs(outputFile);
-            Console.WriteLine($"File save as : {outputFile}");
+            Console.WriteLine($"File saved as : {outputFile}");
 
 
 
@@ -88,7 +156,7 @@ namespace FinalIntegratedWeek1
                await writer.WriteLineAsync($"Total Bill = {_vegitables.GetTotalBillAmount()}");
                 
             }
-            Console.WriteLine("ended");
+            Console.WriteLine("printed");
         }
 
         private static void ReadFromBinaryFile()
@@ -125,10 +193,10 @@ namespace FinalIntegratedWeek1
             string projectDirectory = GetProjectDirectory();
 
             string fileName = "BinaryFile";
-            FileStream fsout = new FileStream(@$"{projectDirectory}\{fileName}.binary", FileMode.Create, FileAccess.Write);
+            FileStream fsout;
             try
             {
-                using (fsout)
+                using (fsout = new FileStream(@$"{projectDirectory}\{fileName}.binary", FileMode.Create, FileAccess.Write))
                 {
                     bf.Serialize(fsout, _vegitables);
                     Console.WriteLine("written into Binary file");
@@ -141,7 +209,7 @@ namespace FinalIntegratedWeek1
             }
         }
 
-        private static string GetProjectDirectory()
+        public static string GetProjectDirectory()
         {
             string workingDirectory = Environment.CurrentDirectory;
             //Console.WriteLine(Environment.CurrentDirectory);
@@ -167,17 +235,66 @@ namespace FinalIntegratedWeek1
 
         private static void AddVegitable()
         {
-            Vegitable vegitable = GetNewVegitableDetails();
-            _vegitables.AddVegitable(vegitable);
+            try
+            {
+                Vegitable vegitable = GetNewVegitableDetails();
+                _vegitables.AddVegitable(vegitable);
+                Console.WriteLine($"vegitable - {vegitable.Name} was added successfuly to the list");
+            }
+            catch (OverPricedVegitableException e)
+            {
+
+                Console.WriteLine(e.Message);
+            }
+            catch(InvalidInputValueException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
+            
+            
         }
 
         private static Vegitable GetNewVegitableDetails()
         {
             Console.WriteLine("Enter Vegitable Name  : ");
-            string name = Console.ReadLine();
+            string? name = null;
+            name = Console.ReadLine();
             Console.WriteLine("Enter vegitable price : ");
-            double price = Convert.ToDouble(Console.ReadLine());
-            return new Vegitable(name, price);
+            double? price = null;
+            try
+            {
+                price = Convert.ToDouble(Console.ReadLine());
+            }
+            catch (FormatException e)
+            {
+                throw new InvalidInputValueException();
+            }
+            
+
+            if (price<=0 && name=="")
+            {
+                throw new InvalidInputValueException(price,name);
+            }
+            else if (price <= 0)
+            {
+                throw new InvalidInputValueException(price);
+            }
+            else if (name == "")
+            {
+                throw new InvalidInputValueException(name);
+            }
+            else
+            {
+                return new Vegitable(name, price ?? 0);
+            }
+
+
+
+            
+            
+            
+            
         }
 
         private static void Exit()
@@ -194,7 +311,10 @@ namespace FinalIntegratedWeek1
             Console.WriteLine("4.  Read binary file");
             Console.WriteLine("5. Write Print Total bill into text file");
             Console.WriteLine("6. Write into excel file");
-            
+            Console.WriteLine("7. File Stream Example Demo");
+            Console.WriteLine("8. Sort by price and display all vegitables");
+            Console.WriteLine("9. Sort By name and display all vegitables");
+            Console.WriteLine("20. EXIT");
         }
     }
 }
